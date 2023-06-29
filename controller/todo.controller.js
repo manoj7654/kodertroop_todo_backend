@@ -16,14 +16,15 @@ const addTask = async (req, res) => {
   const getTask=async(req,res)=>{
     // const {page,limit}=req.query
     const query=req.query
-   const  page=Number(query.page)
-    const limit=Number(query.limit)
+   const  page=Number(query.page) || 0
+    const limit=Number(query.limit) || 0
     try {
       const task=await TodoModal.find().limit(limit).skip((page-1)*limit)
       console.log(task)
     
       //set headers
     res.set("X-TOTAL-COUNT",task.length.toString())
+  
       res.json({task,count:task.length})
     } catch (error) {
       console.error('Error getting task:', error);
