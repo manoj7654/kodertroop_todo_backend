@@ -26,7 +26,7 @@ app.get("/",async(req,res)=>{
     res.json({"message":"Basic Endpoint of todo api",name})
 })
 
-
+// router calling
 app.use("/todos",todoRouter)
 app.use("/users",userRouter)
 
