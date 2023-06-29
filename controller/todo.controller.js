@@ -1,15 +1,11 @@
 
 const {TodoModal}=require("../modals/todoModal")
-const {client}=require('../config/redis')
 
 const addTask = async (req, res) => {
   const {title,description,status,userId}=req.body
     try {
       const task = new TodoModal({title,description,status,userId});
       await task.save();
-      // client.SETEX("task",3600,JSON.stringify(task))
-      client.RPUSH(`tasks${userId}`, JSON.stringify(task));
-      client.EXPIRE(`tasks${userId}`, 3600);
       res.status(201).json({"message":"Todo created successfully"});
     } catch (error) {
       console.error('Error adding task:', error);
@@ -25,7 +21,7 @@ const addTask = async (req, res) => {
     try {
       const task=await TodoModal.find().limit(limit).skip((page-1)*limit)
       console.log(task)
-      client.SETEX("task",3600,JSON.stringify(task))
+    
       //set headers
     res.set("X-TOTAL-COUNT",task.length.toString())
       res.json({task,count:task.length})
@@ -34,19 +30,6 @@ const addTask = async (req, res) => {
       res.status(500).json({ "message": 'Getting error while getting task' });
       
     }
-  }
-
-  const redis_post=async(req,res,next)=>{
-    console.log("redis")
-    client.get("task",(err,redis_data)=>{
-      if(err){
-        res.status(400).json({"message":"getting err"})
-      }else if(redis_data){
-        res.send(JSON.parse(redis_data))
-      }else{
-        next()
-      }
-    })
   }
 
 const searchTask=async(req,res)=>{
@@ -96,7 +79,6 @@ const updateTask=async(req,res)=>{
   module.exports={
     addTask,
     getTask,
-    redis_post,
     searchTask,
     deletTask,
     updateTask

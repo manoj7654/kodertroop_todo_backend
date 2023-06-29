@@ -1,5 +1,5 @@
 const express=require("express")
-const { addTask, getTask, redis_post, searchTask, deletTask, updateTask } = require("../controller/todo.controller")
+const { addTask, getTask, searchTask, deletTask, updateTask } = require("../controller/todo.controller")
 const { authenticate } = require("../middleware/authenticate")
 const todoRouter=express.Router()
 

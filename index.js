@@ -13,17 +13,14 @@ require("dotenv").config();
 const {todoRouter}=require("./routes/todoRoutes")
 const { userRouter }=require("./routes/userRoute")
 
-const {client}=require("./config/redis")
-
 // middleware
 app.use(cors())
 app.use(express.json())
 
 
 app.get("/",async(req,res)=>{
-    // const response=await client.set("name","manoj")
-    const name=await client.get("name")
-    res.json({"message":"Basic Endpoint of todo api",name})
+    //
+    res.json({"message":"Basic Endpoint of todo api"})
 })
 
 // router calling
